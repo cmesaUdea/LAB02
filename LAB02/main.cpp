@@ -141,6 +141,266 @@ void imprimirnumeros(string palabra)
     cout << endl;
 }
 
+//Funciones para el problema 11
+char resycan(char arreglo[15][20], string seleccion)
+{
+    // Funcion para el Problema 11
+
+    int t = 0;
+    char des[3];
+    int fila = seleccion[4]- 65;
+    int columna;
+
+    if(seleccion[7]-48 >= 0 and seleccion[7]-48 <= 9){
+        columna =((seleccion[6]-48)*10) + (seleccion[7]-49);
+    }
+    else{
+        columna = seleccion[6]-49;
+    }
+    if(fila < 0 or fila >= 15){
+        cout << endl;
+        cout << "Comando incorrecto." << endl;
+        return arreglo[15][20];
+    }
+    else if(columna < 0 or columna >= 20){
+        cout << endl;
+        cout << "Comando incorrecto." << endl;
+        return arreglo[15][20];
+    }
+    for(int i=0; seleccion[i], i <=2; i++,t++){
+        *(des+i) = seleccion[i];
+    }
+    if(des[0] == 'r'){
+        if(*(*(arreglo+fila)+columna)== '+'){
+            cout << endl;
+            cout << "Asiento ya reservado, lamentablemente deberas buscar otro." << endl;
+        }
+        else{
+            *(*(arreglo+fila)+columna) = '+';
+        }
+    }
+    else if(des[0] == 'c'){
+        if(*(*(arreglo+fila)+columna) == '-'){
+            cout << endl;
+            cout << "Este asiento no esta reservado." << endl;
+        }
+        else{
+            *(*(arreglo+fila)+columna) = '-';
+        }
+    }
+    return arreglo[15][20];
+}
+
+void printcinema(char arreglo[15][20])
+{
+    // Funcion para el Problema 11
+
+    cout << endl << endl;
+    cout << "Asientos disponibles en -, reservados en +." << endl;
+    for(int i = 0; i < 15; i++){
+        for(int t= 0; t < 20; t++){
+            cout << arreglo[i][t] << " ";
+        }
+        cout << endl;
+    }
+}
+
+//funciones para el problema 13
+int ** llenarMatriz()
+{
+    // Funcion para el problema 13
+
+    int **puntero_matriz;
+    int nfilas;
+    int ncol;
+
+    cout<<"Digite el numero de filas: ";
+    cin>>nfilas;
+    cout<<"Digite el numero de columnas: ";
+    cin>>ncol;
+
+    puntero_matriz = new int*[nfilas];  //reservando memoria para la matriz
+    for(int i=0;i<nfilas;i++){
+        puntero_matriz[i]=new int[ncol];
+    }
+    cout<<endl;
+    cout<<"Digite los elementos de la imagen: "<<endl;
+    for(int i=0;i<nfilas;i++){
+        for(int j=0;j<ncol;j++){
+            cout<<"Digite el elemento["<<i+1<<"]["<<j+1<<"]: ";
+            cin>>*(*(puntero_matriz+i)+j);
+        }
+    }
+    return puntero_matriz;
+}
+
+int estrellas(int **puntero,int filas,int columnas)
+{
+    // Funcion para el problema 13
+
+    int estrellas=0;
+
+    for(int i=1;i<filas-1;i++){       //se recorre toda la matriz, sin tener en cuuenta los bordes
+        for(int j=1;j<columnas-1;j++)
+            if(((*(*(puntero+i)+j)+*(*(puntero+i)+j-1)+*(*(puntero+i)+j+1)+*(*(puntero+i-1)+j)+*(*(puntero+i+1)+j))/5)>6) //si se cumple la condicion se ha encontrado una estrella2
+                estrellas++;
+    }
+    return estrellas;
+}
+
+//funciones para el problema 14
+int ** memoria_dinamica(int dim)
+{
+    // Funcion para el problema 14
+
+    int ** a;
+
+    a = new int * [dim];
+
+    for (int i = 0; i< dim; i ++)
+    {
+        a [i ] = new int [dim];
+
+    }
+
+    return a;
+}
+
+int ** generar_matriz(int dimension)
+{
+    // Funcion para el problema 14
+
+    int ** matriz = memoria_dinamica(dimension);
+
+    for(int f = 0; f < dimension; f++)
+    {
+
+        for(int c = 0; c < dimension; c++)
+        {
+            matriz[f][c] = (c+1) + dimension * f;
+        }
+    }
+
+    return matriz;
+}
+
+
+
+void imprimir_matriz(int **matriz, int dimension)
+{
+    // Funcion para el problema 14
+
+    for(int f = 0; f < dimension; f++)
+    {
+
+        for(int c = 0; c < dimension; c++)
+        {
+            cout<< matriz[f][c]<<"\t";
+        }
+        cout<<endl<<endl;
+    }
+
+
+}
+
+int ** rotate_90 (int **matriz, int dimension)
+{
+    // Funcion para el problema 14
+
+    int **R_matriz = memoria_dinamica(dimension);
+
+
+    for(int f = 0; f < dimension; f++)
+    {
+
+        for(int c = 0; c < dimension; c++)
+        {
+            R_matriz[c][dimension - f- 1] = matriz[f][c] ;
+        }
+    }
+
+    return R_matriz;
+}
+
+int *** rotate_matriz(int dim)
+{
+    // Funcion para el problema 14
+
+    int *** conj_matriz = new int **[4];
+
+    conj_matriz[0] = generar_matriz(dim);
+
+
+    for (int i = 1; i<4; i++)
+    {
+        conj_matriz[i] = rotate_90(conj_matriz[i - 1],dim);
+    }
+    return conj_matriz;
+
+}
+
+
+
+void imprimir_conjunto_matriz(int ***conj_mat , int dim)
+{
+    // Funcion para el problema 14
+
+    for (int i = 0; i < 4 ; i++)
+    {
+        cout<<"Matriz rotada "<<i*90<<" grados"<<endl<<endl;
+        imprimir_matriz(conj_mat[i],dim);
+        cout<<endl<<endl;
+    }
+}
+
+//Funciones proble 15
+int * interseccion_rectangulos_C(int A[],int B[]){
+    // Funcion para el problema 15
+
+    int ancho ,x,y,alto;
+    if (A[1]<=B[0]){
+        ancho=A[0]+A[2]-B[0];}
+    else{ancho=B[0]+B[2]-A[0];}
+    if (A[0]<=B[0]){
+        x=B[0];}
+    else{x=A[0];}
+    if (B[1]<=A[1]){
+        y=A[1];}
+    else{y=B[1];}
+    if (B[1]<=A[1]){
+        alto=B[1]+B[3]-A[1];}
+    else{alto=A[1]+A[3]-B[1];}
+    static int C[]={x,y,ancho,alto};
+    //cout<<"{"<<C[0]<<","<<C[1]<<","<<C[2]<<","<<C[3]<<"}"<<endl;
+    return C;
+}
+
+//Funcion para el problema 16
+int Factorial(int a){
+    // Funcion para el problema 16
+
+    long long int fact=1;
+    if (a==0){
+        return fact;
+    }
+    else if(a!=0){
+        for (int i=1;i<= a;i++){
+            fact*=i;
+        }}
+
+    return fact;
+}
+
+//Funcion problema 17
+int sum_div(int n) { // función que calcula la suma de los divisores propios de n
+    int sum = 0;
+    for (int i = 1; i < n; i++) {
+        if (n % i == 0) {
+            sum += i;
+        }
+    }
+    return sum;
+}
 
 
 int main()
@@ -431,6 +691,19 @@ int main()
 
     case 10:
 
+    /* Problema 10. Escribir un programa que permita convertir un número en el sistema romano al sistema arábigo
+    usado actualmente. A continuación se encuentran los caracteres usados en el sistema romano y su equivalente arábigo:
+    M: 1000
+    D: 500
+    C: 100
+    L: 50
+    X: 10
+    V: 5
+    I: 1
+    Los números romanos se forman usando estos caracteres en base a dos reglas:
+    Si un carácter esta seguido por uno de igual o menor valor, su valor se suma al total.
+    Si un carácter esta seguido por uno de mayor valor, su valor se resta del total.*/
+
     {
         int cont=0,i,j,suma=0,k=0;
         char NumRomanos[7]={'M','D','C','L','X','V','I'};
@@ -460,6 +733,210 @@ int main()
         cout<<suma<<endl;
         break;
     }
+
+    case 11:
+    // Problema 11
+
+    /* Problema 11. Escriba un programa que permita manejar las reservas de asientos en una sala de cine, los asientos de
+    la sala de cine están organizados en 15 filas con 20 asientos cada una. El programa debe mostrar una representación
+    de la sala que indique que asientos están disponibles y cuales se encuentran reservados. Además debe permitir
+    realizar reservas o cancelaciones al ingresar la fila (letras A-O) y el número del asiento (números 1-20).*/
+
+    {
+        char sala[15][20];
+        string seleccion;
+
+        for(int i=0;i<15;i++){ //ciclos que generan el arreglo en dos dimensiones de la sala
+            for(int j=0;j<20;j++){
+                sala[i][j] = '-';
+            }
+        }
+        printcinema(sala); //Impresión de la sala
+
+        while(true){
+            cout << "Indique el asiento a reservar o a cancelar. Ejemplo: 'can A-17', 'res B-20', ingrese x para salir" << endl;
+            cout << "Comando: ";
+            getline(cin, seleccion);
+
+            if (seleccion == "x"){
+                break;
+            }
+
+            sala[15][20] = resycan(sala, seleccion); //Utilización de la función que reserva y cancela
+            printcinema(sala); //Impresión de la sala actualizada
+        }
+        break;
+    }
+
+    case 12:
+
+    /* Problema 12. Un cuadrado mágico es una matriz de números enteros sin repetir, en la que la suma de los números
+    en cada columna, cada fila y cada diagonal principal tienen como resultado la misma constante. Escriba un programa
+    que permita al usuario ingresar una matriz cuadrada, imprima la matriz y verifique si la matriz es un cuadrado
+    mágico.
+    */
+
+    {
+        int n, numeros, sumatoria=0, sumatoria1=0, ban = 1;
+        cout << "Ingrese el tamano de la matriz: ";
+        cin >> n;
+        int matriz[n][n];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                matriz[i][j] = '0';
+            }
+        }
+        while(true){
+            for(int i=0;i<n;i++){
+                for(int j=0; j<n;j++){
+                    cout << "Ingrese un numero en la posicion: " << i << "," << j << ": ";
+                    cin >> numeros;
+                    matriz[i][j] = numeros;
+                }
+            }
+            break;
+        }
+
+
+        for(int i=0;i<n;i++){
+            sumatoria = 0;
+            for(int j=0; j<n;j++){
+                sumatoria += matriz[i][j];
+            }
+            if(sumatoria1==0){
+                sumatoria1=sumatoria;
+            }
+            if(sumatoria1!=sumatoria){
+                ban = 0;
+                break;
+            }
+        }
+        if(ban==1){
+            for(int j=0;j<n;j++){
+                sumatoria = 0;
+                for(int i=0; i<n;i++){
+                    sumatoria += matriz[i][j];
+                }
+                if(sumatoria1!=sumatoria){
+                    ban = 0;
+                    break;
+                }
+            }
+        }
+        if(ban==1){
+            sumatoria = 0;
+            int t = n-1;
+            for(int i=0; i<n;i++){
+                sumatoria += matriz[i][i];
+            }
+            if((sumatoria)!=sumatoria1){
+                ban=0;
+            }
+            sumatoria = 0;
+            for(int i=0; i<n;i++,t--){
+                sumatoria += matriz[i][t];
+            }
+            if(sumatoria!=sumatoria1){
+                ban=0;
+            }
+        }
+        cout << endl;
+        for(int i=0;i<n;i++){
+            for(int j=0; j<n;j++){
+                if(matriz[i][j]/104 >= 1){
+                    cout << matriz[i][j] << " ";
+                }
+                else{
+                    cout << " " << matriz[i][j] << " ";
+                }
+            }
+            cout << endl;
+        }
+        if(ban==1){
+            cout << "La matriz es magica" << endl;
+        }
+        else{
+            cout << "La matriz no es magica" << endl;
+        }
+        break;
+    }
+
+    case 13:
+
+    /* Problema 13. Se tiene una fotografía digitalizada de una porción de la galaxia NGC 1300 que está ubicada a
+    61.000.000 de años luz del planeta Tierra. La representación digital de la imagen está constituida por una matriz
+    de números enteros; en la cual, cada uno representa la cantidad de luz en ese punto de la imagen, así:
+    Elabore y pruebe una función que reciba un puntero a la matriz de enteros como argumento y que retorne el número
+    de estrellas encontradas en la imagen. Ignore las posibles estrellas que puedan existir en los bordes de la matriz.*/
+
+    {
+        int **puntero=llenarMatriz();
+        cout<<"El numero de estrellas es: "<<estrellas(puntero,6,8)<<endl;
+        break;
+    }
+
+    case 14:
+
+    /* Problema 14. Elabore un programa que llene una matriz 5x5 con los números del 1 al 25 y la imprima, luego
+    imprima la matriz rotada 90, 180 y 270 grados. El profe lo hizo general, es decir, con un numero ingresado
+    por el usuario */
+
+    {
+        int dim = 5;
+
+        int *** m = rotate_matriz(dim);
+
+        imprimir_conjunto_matriz(m,dim);
+
+        break;
+    }
+
+    case 15:
+
+    {
+        int A[]={0,0,8,4};
+        int B[]={5,2,3,2};
+        int *zoe=interseccion_rectangulos_C(A,B);
+        cout<<"{"<<zoe[0]<<","<<zoe[1]<<","<<zoe[2]<<","<<zoe[3]<<"}"<<endl;
+        break;
+    }
+
+    case 16:
+    {
+
+        long long int n=0,fact1=0,fact2=0;
+        cout<<"Ingrese un numero"<<endl;
+        cin>>n;
+        fact1=Factorial(n);
+        cout<<"Para una malla de "<<n<<"x"<<n<<" hay ";
+        n=n+n;
+        fact2=Factorial(n);
+        n=fact2/(fact1*fact1);
+        cout<<n<<" caminos"<<endl;
+
+    }
+
+    case 17:
+    {
+        int n1, n2;
+        cout << "Ingrese dos numeros: " << endl;
+        cin >> n1 >> n2;
+        int sum1 = sum_div(n1); // calcula la suma de los divisores propios de n1
+        int sum2 = sum_div(n2); // calcula la suma de los divisores propios de n2
+        if (sum1 == n2 && sum2 == n1) { // verifica si son amigos
+        cout << n1 << " y " << n2 << " son numeros amigos." << endl;
+        } else {
+        cout << n1 << " y " << n2 << " no son numeros amigos." << endl;
+        }
+        break;
+
+    }
+
+
+
+
+
+
 
 
    }
