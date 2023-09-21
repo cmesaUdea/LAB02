@@ -1,0 +1,48 @@
+// Incluir libreria para LCD_crystal
+#include <LiquidCrystal.h> 
+
+
+LiquidCrystal lcd(2,3,4,5,6,7);//Crear el objeto LCD con los números correspondientes (rs, en, d4, d5, d6, d7)
+
+
+String texto_fila_0 = "Sea usted bienvenido";//Texto de entrada
+
+void setup() { //configuraciones iniciales
+ 
+  //Serial.begin(9600);//configuracion serial
+
+  
+  lcd.begin(16,2); //configuracion filas y columnas (columnas=16,filas=2)
+}
+
+void loop() {
+
+  int tam_texto=texto_fila_0.length();// Tamaño del texto
+  
+  
+  for(int i=16;i>=1;i--)//Desplazar texto hacia la izquierda en fila 0
+  {
+   
+    lcd.clear();// limpia el monitor
+ 
+   
+    lcd.setCursor(i, 0); 
+ 
+    
+    lcd.print(texto_fila_0);
+ 
+    
+    delay(300);//retardo
+    
+  }
+  
+  
+    lcd.clear();
+  
+    delay(100); 
+ 
+    lcd.setCursor(0, 1);//Columna 0 y fila 1
+    lcd.print(" Hola mundo"); //Asi como en la anterior instrucción
+    delay(5000);// tiempo en pantalla
+  
+}

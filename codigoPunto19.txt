@@ -1,0 +1,21 @@
+// C++ code
+
+
+const int led_pin=9; //Se elige un pin en particular para el LED conectado
+int pot=0;  // Se inicializa el valor del potenciometro
+int intensidad=0;    //Intensidad de la luminosidad
+
+void setup()
+{
+  pinMode(led_pin,OUTPUT);//configurando pin 9 como salida
+}
+
+void loop()
+{
+  intensidad=(analogRead(pot))/4; //salida sólo funciona de 0-255, se debe dividir
+  							//el valor que entrega el pin análogo que es de 0-1023
+  Serial.print(intensidad);
+  analogWrite(led_pin,intensidad);//Escribe el valor en salida(pin 9)
+  delay(25);// retardo para que el cambio sea más continuo
+  
+}
